@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mapa</title>
+  <style>
+    #mapa {
+      height: 600px;
+      width: 800px;
+    }
+  </style>
+</head>
+<body>
+<script src="mapa.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwtTNljYAht0pb-AmCznyVV-ZI0ZbeG-c&callback=gerarCoordenadas"></script>
+  <div id="main">
+    <label for="saida">Ponto de Saída</label>
+    <input type="text" id="saida">
+    <label for="chegada"></label>
+    <input type="text" id="chegada">
+    <button onclick="gerarCoordenadas()">Buscar</button>
+  </div>
+  <div id="mapa"></div>
+</body>
+</html>
