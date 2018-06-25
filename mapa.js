@@ -9,7 +9,7 @@ function calcularMostrarRotas(servicoDirecoes, mostrarDirecoes, pontoOrigem, pon
     if (status === google.maps.DirectionsStatus.OK) {
       mostrarDirecoes.setDirections(response);
     } else {
-      window.alert('Directions request failed due to ' + status);
+      window.alert('Requisição falhou devida a: ' + status);
     }
   });
 }
@@ -40,20 +40,33 @@ function buscarPontoChegada(pontoChegada) {
   })
 }
 
-function gerarCoordenadas () {
-  let pontoSaida = document.getElementById('saida').value
-  let pontoChegada = document.getElementById('chegada').value
-  let coordenadasPontoSaida
-  let coordenadasPontoChegada
-  buscarPontoSaida(pontoSaida)
-    .then(resultadoPontoSaida => {
-      buscarPontoChegada(pontoChegada)
-        .then(resultadoPontoChegada => {
-          coordenadasPontoSaida = JSON.parse(resultadoPontoSaida).results[0].geometry.location
-          coordenadasPontoChegada = JSON.parse(resultadoPontoChegada).results[0].geometry.location
-          iniciarMapa(coordenadasPontoSaida, coordenadasPontoChegada)
-        })
-    })
+function gerarCoordenadas (pontoA, pontoB, origem) {
+  let pontoSaida
+  let pontoChegada
+  if (pontoA === '' && pontoB === '') {
+    pontoSaida = document.getElementById('saida').value
+    pontoChegada = document.getElementById('chegada').value
+  }
+  else {
+    pontoSaida = pontoA
+    pontoChegada = pontoB
+  }
+  if (pontoSaida !== undefined && pontoChegada !== undefined) {
+    let coordenadasPontoSaida
+    let coordenadasPontoChegada
+    buscarPontoSaida(pontoSaida)
+      .then(resultadoPontoSaida => {
+        buscarPontoChegada(pontoChegada)
+          .then(resultadoPontoChegada => {
+            coordenadasPontoSaida = JSON.parse(resultadoPontoSaida).results[0].geometry.location
+            coordenadasPontoChegada = JSON.parse(resultadoPontoChegada).results[0].geometry.location
+            iniciarMapa(coordenadasPontoSaida, coordenadasPontoChegada)
+            if (origem !== 'clickLista') {
+              adicionarItemLista(pontoSaida, pontoChegada)
+            }
+          })
+      })
+  }
 
 }
 
@@ -82,4 +95,16 @@ function iniciarMapa(origem, destino) {
     map: mapa
   });
   calcularMostrarRotas(servicoDirecoes, mostrarDirecoes, pontoOrigem, pontoDestino)
+}
+
+function adicionarItemLista(pontoSaida, pontoChegada) {
+  if (pontoSaida !== undefined && pontoChegada !== undefined) {
+    let ol = document.getElementById('listaBuscas')
+    let item = document.createElement('li')
+    item.innerHTML = '<a href="#">' + pontoSaida + ' - ' + pontoChegada + '</a>'
+    item.addEventListener('click', function () {
+      gerarCoordenadas(pontoSaida, pontoChegada,'clickLista')
+    })
+    ol.appendChild(item)
+  }
 }

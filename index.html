@@ -7,6 +7,16 @@
     #mapa {
       height: 600px;
       width: 800px;
+      margin-top: 10px;
+    }
+    #conteudo {
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+    }
+    #listaBuscas {
+      float: left;
+      width: 20%;
     }
   </style>
 </head>
@@ -14,12 +24,17 @@
 <script src="mapa.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwtTNljYAht0pb-AmCznyVV-ZI0ZbeG-c&callback=gerarCoordenadas"></script>
   <div id="main">
-    <label for="saida">Ponto de Saída</label>
+    <p>Pode-se realizar pesquisas por endereço e CEP.</p>
+    <p>Os endereços pesquisados ficam na lista,e ao clicar neles a rota é montada novamente.</p>
+    <label for="saida">Origem</label>
     <input type="text" id="saida">
-    <label for="chegada"></label>
+    <label for="chegada">Destino</label>
     <input type="text" id="chegada">
-    <button onclick="gerarCoordenadas()">Buscar</button>
+    <button onclick="gerarCoordenadas('', '', 'botao')">Buscar</button>
   </div>
-  <div id="mapa"></div>
+  <div id="conteudo">
+    <ul id="listaBuscas"></ul>
+    <div id="mapa"></div>
+  </div>
 </body>
 </html>
